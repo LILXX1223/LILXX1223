@@ -1,0 +1,10 @@
+Django==4.2.30
+django-simpleui==2026.1.13
+djangorestframework==3.15.2
+ortools==9.11.4210
+httpx==0.28.1
+python-dotenv==1.2.1
+cryptography==45.0.7
+openpyxl==3.1.5
+xlrd==2.0.1
+Pillow==11.3.0

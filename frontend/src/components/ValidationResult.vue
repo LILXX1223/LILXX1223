@@ -1,0 +1,6 @@
+<script setup>
+import { computed } from 'vue'
+const props=defineProps({report:Object});defineEmits(['locate'])
+const sections=computed(()=>props.report?.errors?.some(x=>x.period)?[['general','全周期问题'],['week_1','第1周问题'],['week_2','第2周问题'],['cross_week','跨周衔接问题']].map(([key,label])=>({label,items:props.report.errors.filter(x=>x.period===key)})).filter(x=>x.items.length):[{label:'',items:props.report?.errors||[]}])
+</script>
+<template><div v-if="report"><el-alert :type="report.valid?'success':'error'" :title="report.valid?'校验通过':'存在阻断性问题，发布前必须处理'" :closable="false" show-icon/><div class="validation-summary"><span>阻断问题 <b>{{report.errors?.length||0}}</b></span><span>提示事项 <b>{{report.warnings?.length||0}}</b></span></div><template v-for="section in sections" :key="section.label"><h4 v-if="section.label">{{section.label}}</h4><div v-for="(issue,i) in section.items" :key="i" class="issue error"><span>{{issue.message}}</span><el-button v-if="issue.nurse||issue.bed" size="small" @click="$emit('locate',issue)">定位修改</el-button></div></template><div v-for="(issue,i) in report.warnings" :key="'w'+i" class="issue warning">{{issue.message}}</div></div><el-empty v-else description="尚未执行校验"/></template>
